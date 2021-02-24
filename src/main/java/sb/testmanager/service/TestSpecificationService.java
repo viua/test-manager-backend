@@ -7,11 +7,16 @@ import sb.testmanager.controller.dto.TestSpecDto;
 import sb.testmanager.controller.exceptions.AlreadyExistException;
 import sb.testmanager.model.TestDefinition;
 import sb.testmanager.repository.TestDefinitionRepository;
+import sb.testmanager.service.mapper.TestRunMapper;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class TestSpecificationService {
 
+    private final TestRunMapper testRunMapper;
     private final TestDefinitionRepository testDefinitionRepository; /// rm TestSpecificationRepository
 
     @Transactional
@@ -19,9 +24,15 @@ public class TestSpecificationService {
         testDefinitionRepository.findByName(dto.getName())
                 .ifPresent(e -> { throw AlreadyExistException.testSpecAlreadyExists(); });
         TestDefinition testDefinition = testDefinitionRepository.save(TestDefinition.of(dto.getName()));
-        /// -> map to DTO
+        //TODO map 2 DTO
         return new TestSpecDto(testDefinition.getName());
     }
 
-    //TestDefinition
+    @Transactional(readOnly = true)
+    public List<TestSpecDto> getTests() { //TestRunDto
+        return testDefinitionRepository.findAll().stream()
+                .map(TestRunMapper::map)
+                .collect(Collectors.toList());
+    }
+
 }

@@ -12,8 +12,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import sb.testmanager.controller.dto.TestSpecDto;
 import sb.testmanager.controller.exceptions.AlreadyExistException;
-import sb.testmanager.model.TestDefinition;
-import sb.testmanager.repository.TestDefinitionRepository;
 import sb.testmanager.service.TestSpecificationService;
 
 import static java.util.Arrays.asList;
@@ -29,9 +27,6 @@ public class TestSpecificationControllerTest {
     private static final String TEST_SPEC_URL = "/api/tm/test";
 
     @Mock
-    private TestDefinitionRepository testDefinitionRepository;
-
-    @Mock
     private TestSpecificationService testSpecificationService;
 
     @InjectMocks
@@ -45,10 +40,12 @@ public class TestSpecificationControllerTest {
 
     @Test
     public void shouldGetAllTestSpecs() throws Exception {
-        when(testDefinitionRepository.findAll())
-                .thenReturn(asList(TestDefinition.of("Test Case 1")));
+        // given
+        when(testSpecificationService.getTests())
+                .thenReturn(asList(new TestSpecDto(0, "Test Case 1", "undefined")));
 
-        mockMvc.perform(MockMvcRequestBuilders.get(TEST_SPEC_URL))
+        // when & then
+        mockMvc.perform(MockMvcRequestBuilders.get(TEST_SPEC_URL)).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$[0].name").value("Test Case 1"));
@@ -102,4 +99,5 @@ public class TestSpecificationControllerTest {
             throw new RuntimeException(e);
         }
     }
+
 }

@@ -1,8 +1,6 @@
 package sb.testmanager.controller;
 
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
@@ -29,9 +27,8 @@ public class TestSpecificationController extends BaseController {
 
     @GetMapping
     @ResponseStatus(OK)
-    public List<TestDefinition> getTestRuns() {
-        log.info("GET: /api/tm/tests" + testDefinitionRepository.findAll().size());
-        return testDefinitionRepository.findAll();
+    public List<TestSpecDto> getTestRuns() {
+        return testSpecificationService.getTests();
     }
 
     @PostMapping

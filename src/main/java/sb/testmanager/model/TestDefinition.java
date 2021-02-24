@@ -24,7 +24,7 @@ public class TestDefinition implements Serializable {
     private String name;
 
     @NonNull
-    @Column(nullable = false)
+    @Column(nullable = false) //TODO Enum
     private String status = "undefined";
 
     public static TestDefinition of(String name) {
@@ -32,6 +32,3 @@ public class TestDefinition implements Serializable {
         return new TestDefinition(name);
     }
 }
-
-/// 1 single table impl
-/// make it in other way later if time spare
