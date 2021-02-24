@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd
+http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.8.xsd">
+
+    <changeSet id="schema initialization" author="vi">
+        <comment>Create initial database schema</comment>
+        <sqlFile path="init.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="init demo data" author="vi">
+        <comment>Populate database demo data</comment>
+        <sql>
+            INSERT INTO TEST_DEFINITION VALUES (nextval('test_definition_id_seq'), 'Test Case 1', 'undefined');
+            INSERT INTO TEST_DEFINITION VALUES (nextval('test_definition_id_seq'), 'Test Case 2', 'failed');
+            INSERT INTO TEST_DEFINITION VALUES (nextval('test_definition_id_seq'), 'Test Case 3', 'passed');
+        </sql>
+    </changeSet>
+
+    <changeSet id="add dict data" author="vi">
+        <comment>Populate dict data</comment>
+        <sql>
+            CREATE TABLE TEST_RUN_STATUS_DICT (
+               ID INT,
+               VALUE varchar (20) UNIQUE NOT NULL,
+               CAPTION varchar (20) UNIQUE NOT NULL
+            );
+            INSERT INTO TEST_RUN_STATUS_DICT VALUES(0, 'undefined', 'Undefined');
+            INSERT INTO TEST_RUN_STATUS_DICT VALUES(1, 'failed', 'Failed');
+            INSERT INTO TEST_RUN_STATUS_DICT VALUES(2, 'passed', 'Passed');
+        </sql>
+    </changeSet>
+
+
+</databaseChangeLog>

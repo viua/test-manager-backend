@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: test-manager-configmap
+data:
+  SPRING_DATASOURCE_URL: "jdbc:postgresql://test-manager-database:5432/tmdb?createDatabaseIfNotExist=true"
+  application.properties: /
+    application.name="test-manager kubernetes tutorial"
+    configuration.name="test-manager config"

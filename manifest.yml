@@ -1,0 +1,14 @@
+---
+applications:
+  - name: test-manager-backend
+    buildpacks:
+      - java_buildpack
+    path: build/libs/test-manager-backend.jar
+    env:
+      # DATABASE_HOST: 'postgres-f0e52fb3-57c2-4d32-8254-32c9992a34e0.ce4jcviyvogb.eu-central-1.rds.amazonaws.com'
+      # DATABASE_PORT: '1778'
+      # DATABASE_NAME: 'cPhENrWFcWAB'
+      JBP_CONFIG_OPEN_JDK_JRE: '{jre: { version: 11.+ }}'
+      DATABASE_URL: 'postgres://95c386fd29b3:6a5623230a11@postgres-f0e52fb3-57c2-4d32-8254-32c9992a34e0.ce4jcviyvogb.eu-central-1.rds.amazonaws.com:1778/cPhENrWFcWAB'
+      # cf set-env test-manager-backend JBP_CONFIG_OPEN_JDK_JRE '{jre: { version: 11.+ }}'
+      # env var to cmd args
