@@ -17,7 +17,7 @@ public interface TestSpecificationService {
      * Get all test runs
      * @return list of Test Runs DTO
      */
-    List<TestSpecDto> getTests();
+    List<TestSpecDto> getTestsRun();
 
     /**
      * Update Test run status

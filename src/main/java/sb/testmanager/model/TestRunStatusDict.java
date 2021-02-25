@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Table(name = "TEST_RUN_STATUS_DICT")
 @NoArgsConstructor
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-public class TestRunStatus implements Serializable {
+public class TestRunStatusDict implements Serializable {
 
     @Id
     @NonNull

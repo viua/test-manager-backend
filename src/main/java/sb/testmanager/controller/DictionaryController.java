@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import sb.testmanager.model.TestRunStatus;
+import sb.testmanager.model.TestRunStatusDict;
 import sb.testmanager.repository.DictionaryRepository;
 
 import java.util.List;
@@ -19,7 +19,7 @@ public class DictionaryController {
     private DictionaryRepository dictionaryRepository;
 
     @GetMapping
-    public List<TestRunStatus> getDictionaries() {
+    public List<TestRunStatusDict> getDictionaries() {
         log.info("get test dictionaries");
         return dictionaryRepository.findAll();
     }

@@ -14,14 +14,15 @@ curl --request PUT \
      --data '{"name":"dManchester City", "status": "pass" }' \
      http://localhost:8080/api/tm/test/5
 
+./gradlew clean build
 docker build -t test-manager:1.0 -f src/main/docker/Dockerfile .
 ./src/main/docker/deploy.sh
+./src/main/docker/remove.sh
 
 ./gradlew clean build && docker build -t test-manager:1.0 -f src/main/docker/Dockerfile .
 
 ./gradlew clean build && docker build -t test-manager:1.0 -f src/main/docker/Dockerfil
-./src/main/docker/deploy.sh
-./src/main/docker/remove.sh
+
 -Dspring.profiles.active=dev 
 SPRING_PROFILES_ACTIVE=dev
 

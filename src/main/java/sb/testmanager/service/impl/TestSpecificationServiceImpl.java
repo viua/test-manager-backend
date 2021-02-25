@@ -5,8 +5,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sb.testmanager.controller.dto.TestSpecDto;
 import sb.testmanager.controller.exceptions.AlreadyExistException;
-import sb.testmanager.model.TestDefinition;
-import sb.testmanager.repository.TestDefinitionRepository;
+import sb.testmanager.model.RunStatus;
+import sb.testmanager.model.TestSpecification;
+import sb.testmanager.model.TestRun;
+import sb.testmanager.repository.TestSpecificationRepository;
 import sb.testmanager.service.TestSpecificationService;
 import sb.testmanager.service.mapper.TestRunMapper;
 
@@ -18,22 +20,22 @@ import java.util.stream.Collectors;
 public class TestSpecificationServiceImpl
         implements TestSpecificationService {
 
-    private final TestRunMapper testRunMapper;
-    private final TestDefinitionRepository testDefinitionRepository; /// rm TestSpecificationRepository
+    private final TestRunMapper mapper;
+    private final TestSpecificationRepository testSpecificationRepository;
 
     @Override
     @Transactional
     public TestSpecDto addTestSpecification(TestSpecDto dto) {
-        testDefinitionRepository.findByName(dto.getName())
+        testSpecificationRepository.findByName(dto.getName())
                 .ifPresent(e -> { throw AlreadyExistException.testSpecAlreadyExists(); });
-        TestDefinition testSpec = testDefinitionRepository.save(TestDefinition.of(dto.getName()));
-        return testRunMapper.map(testSpec);
+        TestSpecification testSpec = testSpecificationRepository.save(TestSpecification.of(dto.getName()));
+        return mapper.map(testSpec);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<TestSpecDto> getTests() { //TestRunDto
-        return testDefinitionRepository.findAll().stream()
+    public List<TestSpecDto> getTestsRun() {
+        return testSpecificationRepository.findAll().stream()
                 .map(TestRunMapper::map)
                 .collect(Collectors.toList());
     }
@@ -41,18 +43,19 @@ public class TestSpecificationServiceImpl
     @Override
     @Transactional
     public TestSpecDto updateTestStatus(final TestSpecDto dto) {
-        final TestDefinition testSpec = testDefinitionRepository.findById(dto.getId())
+        TestSpecification testSpec = testSpecificationRepository.findById(dto.getId())
                 .orElseThrow(() -> { throw AlreadyExistException.testSpecNotFound(); });
-        testSpec.setStatus(dto.getStatus());
-        return testRunMapper.map(testSpec);
+        TestRun testRun = mapper.getLatestRunOrDefault(testSpec);
+        testRun.setRunStatus(RunStatus.valueOf(dto.getStatus())); //TODO: add converter
+        return mapper.map(testSpec);
     }
 
     @Override
     @Transactional
     public void deleteTestSpecification(final Integer id) {
-        final TestDefinition testDefinition = testDefinitionRepository.findById(id)
-                .orElseThrow(()-> { throw AlreadyExistException.testSpecNotFound(); });
-        testDefinitionRepository.delete(testDefinition);
+        final TestSpecification testSpecification = testSpecificationRepository.findById(id)
+                .orElseThrow(() -> { throw AlreadyExistException.testSpecNotFound(); });
+        testSpecificationRepository.delete(testSpecification);
     }
 
 }

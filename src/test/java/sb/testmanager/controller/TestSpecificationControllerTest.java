@@ -30,18 +30,18 @@ public class TestSpecificationControllerTest {
     private TestSpecificationService testSpecificationService;
 
     @InjectMocks
-    private TestSpecificationController testSpecificationController;
+    private TestManagerController testManagerController;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(testSpecificationController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(testManagerController).build();
     }
 
     @Test
     public void shouldGetAllTestSpecs() throws Exception {
         // given
-        when(testSpecificationService.getTests())
+        when(testSpecificationService.getTestsRun())
                 .thenReturn(asList(new TestSpecDto(0, "Test Case 1", "undefined")));
 
         // when & then

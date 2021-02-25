@@ -1,5 +1,6 @@
 package sb.testmanager.service;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -7,8 +8,8 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import sb.testmanager.controller.dto.TestSpecDto;
-import sb.testmanager.model.TestDefinition;
-import sb.testmanager.repository.TestDefinitionRepository;
+import sb.testmanager.model.TestSpecification;
+import sb.testmanager.repository.TestSpecificationRepository;
 import sb.testmanager.service.impl.TestSpecificationServiceImpl;
 import sb.testmanager.service.mapper.TestRunMapper;
 
@@ -30,24 +31,29 @@ public class TestSpecificationServiceTest {
     private TestRunMapper testRunMapper;
 
     @Mock
-    private TestDefinitionRepository testDefinitionRepository;
+    private TestSpecificationRepository testSpecificationRepository;
 
     @InjectMocks
     private TestSpecificationServiceImpl testSpecificationService;
 
+    @Test @Disabled
+    void shouldAddTestSpecification() {
+        // not implemented
+    }
+
     @Test
     void shouldReturnAllTest() {
         // given
-        TestDefinition test1  = TestDefinition.of("Test 1");
-        TestDefinition test2  = TestDefinition.of("Test 2");
+        TestSpecification test1  = TestSpecification.of("Test 1");
+        TestSpecification test2  = TestSpecification.of("Test 2");
 
-        given(testDefinitionRepository.findAll()).willReturn(List.of(test1, test2));
+        given(testSpecificationRepository.findAll()).willReturn(List.of(test1, test2));
 
         // when
-        List<TestSpecDto> specsActual = testSpecificationService.getTests();
+        List<TestSpecDto> specsActual = testSpecificationService.getTestsRun();
 
         // then
-        verify(testDefinitionRepository).findAll();
+        verify(testSpecificationRepository).findAll();
         assertThat(specsActual)
                 .extracting(TestSpecDto::getName, TestSpecDto::getStatus)
                 .containsOnly(tuple(test1.getName(), test1.getStatus()),
@@ -57,15 +63,15 @@ public class TestSpecificationServiceTest {
     @Test
     void shouldUpdateTestStatus() {
         // given
-        TestDefinition testDefinition = TestDefinition.of("Test 1");
-        testDefinition.setId(0);
-        testDefinition.setStatus("unspecified");
+        TestSpecification testSpecification = TestSpecification.of("Test 1");
+        testSpecification.setId(0);
+        testSpecification.setStatus("UNSPECIFIED");
 
-        given(testDefinitionRepository.findById(any(Integer.class)))
-                .willReturn(Optional.of(testDefinition));
+        given(testSpecificationRepository.findById(any(Integer.class)))
+                .willReturn(Optional.of(testSpecification));
 
         // when
-        TestSpecDto expected = new TestSpecDto(testDefinition.getId(), testDefinition.getName(), "passed");
+        TestSpecDto expected = new TestSpecDto(testSpecification.getId(), testSpecification.getName(), "PASSED");
         TestSpecDto actual = testSpecificationService.updateTestStatus(expected);
 
         // then

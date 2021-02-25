@@ -1,11 +1,16 @@
-CREATE SEQUENCE IF NOT EXISTS TEST_DEFINITION_ID_SEQ;
-CREATE TABLE TEST_DEFINITION (
-   ID serial,
-   NAME varchar(40) NOT NULL,
-   STATUS varchar(20)
-);
+    CREATE SEQUENCE IF NOT EXISTS TEST_SPECIFICATION_ID_SEQ;
 
--- INSERT INTO TEST_DEFINITION VALUES (nextval('test_definition_id_seq'), 'Manchester City', 'passed');
--- commit;
+    CREATE TABLE TEST_SPECIFICATION (
+       ID serial,
+       NAME varchar(40) NOT NULL,
+       STATUS varchar(20)
+    );
 
--- https://arjunsk.medium.com/liquibase-create-schema-tables-items-in-your-database-753a6dd38893
+    CREATE SEQUENCE IF NOT EXISTS TEST_RUN_ID_SEQ;
+
+    CREATE TABLE IF NOT EXISTS test_runs (
+       ID serial,
+       RUN_STATUS varchar(20) NOT NULL,
+       creation_time timestamp WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+       TEST_SPECIFICATION_ID INT
+    );

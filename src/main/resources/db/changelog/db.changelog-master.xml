@@ -11,28 +11,29 @@ http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibas
         <sqlFile path="init.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
-    <changeSet id="init demo data" author="vi">
-        <comment>Populate database demo data</comment>
-        <sql>
-            INSERT INTO TEST_DEFINITION VALUES (nextval('test_definition_id_seq'), 'Test Case 1', 'undefined');
-            INSERT INTO TEST_DEFINITION VALUES (nextval('test_definition_id_seq'), 'Test Case 2', 'failed');
-            INSERT INTO TEST_DEFINITION VALUES (nextval('test_definition_id_seq'), 'Test Case 3', 'passed');
-        </sql>
-    </changeSet>
-
     <changeSet id="add dict data" author="vi">
         <comment>Populate dict data</comment>
         <sql>
             CREATE TABLE TEST_RUN_STATUS_DICT (
-               ID INT,
-               VALUE varchar (20) UNIQUE NOT NULL,
-               CAPTION varchar (20) UNIQUE NOT NULL
+            ID INT,
+            VALUE varchar (20) UNIQUE NOT NULL,
+            CAPTION varchar (20) UNIQUE NOT NULL
             );
-            INSERT INTO TEST_RUN_STATUS_DICT VALUES(0, 'undefined', 'Undefined');
-            INSERT INTO TEST_RUN_STATUS_DICT VALUES(1, 'failed', 'Failed');
-            INSERT INTO TEST_RUN_STATUS_DICT VALUES(2, 'passed', 'Passed');
+            INSERT INTO TEST_RUN_STATUS_DICT VALUES(0, 'UNDEFINED', 'Undefined');
+            INSERT INTO TEST_RUN_STATUS_DICT VALUES(1, 'FAILED', 'Failed');
+            INSERT INTO TEST_RUN_STATUS_DICT VALUES(2, 'PASSED', 'Passed');
         </sql>
     </changeSet>
 
-
+    <changeSet id="add demo data" author="vi">
+        <comment>add demo data</comment>
+        <sql>
+            INSERT INTO TEST_SPECIFICATION VALUES (nextval('test_specification_id_seq'), 'Test Case 1', 'undefined');
+            INSERT INTO TEST_RUNS(id, RUN_STATUS, TEST_SPECIFICATION_ID) VALUES (nextval('test_run_id_seq'), 'PASSED',  currval('test_specification_id_seq'));
+            INSERT INTO TEST_SPECIFICATION VALUES (nextval('test_specification_id_seq'), 'Test Case 2', 'undefined');
+            INSERT INTO TEST_RUNS(id, RUN_STATUS, TEST_SPECIFICATION_ID) VALUES (nextval('test_run_id_seq'), 'FAILED',  currval('test_specification_id_seq'));
+            INSERT INTO TEST_SPECIFICATION VALUES (nextval('test_specification_id_seq'), 'Test Case 3', 'undefined');
+            INSERT INTO TEST_RUNS(id, RUN_STATUS, TEST_SPECIFICATION_ID) VALUES (nextval('test_run_id_seq'), 'UNDEFINED',  currval('test_specification_id_seq'));
+        </sql>
+    </changeSet>
 </databaseChangeLog>
