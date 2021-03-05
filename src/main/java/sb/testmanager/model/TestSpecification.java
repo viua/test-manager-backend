@@ -33,7 +33,7 @@ public class TestSpecification implements Serializable {
 
 
     @OneToMany(mappedBy = "testSpecification", cascade = CascadeType.ALL)
-    private List<TestRun> testRuns = new ArrayList<>();
+    private List<TestRunExecutionStatus> testRunExecutionStatuses = new ArrayList<>();
 
     public static TestSpecification of(String name) {
         Objects.requireNonNull(name, "Test specification name cannot be empty or null.");

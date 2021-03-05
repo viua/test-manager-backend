@@ -7,7 +7,7 @@ import sb.testmanager.controller.dto.TestSpecDto;
 import sb.testmanager.controller.exceptions.AlreadyExistException;
 import sb.testmanager.model.RunStatus;
 import sb.testmanager.model.TestSpecification;
-import sb.testmanager.model.TestRun;
+import sb.testmanager.model.TestRunExecutionStatus;
 import sb.testmanager.repository.TestSpecificationRepository;
 import sb.testmanager.service.TestSpecificationService;
 import sb.testmanager.service.mapper.TestRunMapper;
@@ -45,8 +45,8 @@ public class TestSpecificationServiceImpl
     public TestSpecDto updateTestStatus(final TestSpecDto dto) {
         TestSpecification testSpec = testSpecificationRepository.findById(dto.getId())
                 .orElseThrow(() -> { throw AlreadyExistException.testSpecNotFound(); });
-        TestRun testRun = mapper.getLatestRunOrDefault(testSpec);
-        testRun.setRunStatus(RunStatus.valueOf(dto.getStatus())); //TODO: add converter
+        TestRunExecutionStatus testRunExecutionStatus = mapper.getLatestRunOrDefault(testSpec);
+        testRunExecutionStatus.setRunStatus(RunStatus.valueOf(dto.getStatus())); //TODO: add converter
         return mapper.map(testSpec);
     }
 

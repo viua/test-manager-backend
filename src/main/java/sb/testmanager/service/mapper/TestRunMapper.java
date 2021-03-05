@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 import sb.testmanager.controller.dto.TestSpecDto;
 import sb.testmanager.model.RunStatus;
 import sb.testmanager.model.TestSpecification;
-import sb.testmanager.model.TestRun;
+import sb.testmanager.model.TestRunExecutionStatus;
 
 import java.util.Comparator;
 
@@ -14,19 +14,19 @@ import static java.util.Arrays.asList;
 public class TestRunMapper {
 
     public static TestSpecDto map(TestSpecification testSpecification) {
-        TestRun latestTestRun = getLatestRunOrDefault(testSpecification);
+        TestRunExecutionStatus latestTestRunExecutionStatus = getLatestRunOrDefault(testSpecification);
         return new TestSpecDto(testSpecification.getId(),
                 testSpecification.getName(),
-                latestTestRun.getRunStatus().name()
+                latestTestRunExecutionStatus.getRunStatus().name()
         );
     }
 
-    public static TestRun getLatestRunOrDefault(TestSpecification definition) {
-        return definition.getTestRuns().stream()
-                .max(Comparator.comparing(TestRun::getCreationTime))
+    public static TestRunExecutionStatus getLatestRunOrDefault(TestSpecification definition) {
+        return definition.getTestRunExecutionStatuses().stream()
+                .max(Comparator.comparing(TestRunExecutionStatus::getCreationTime))
                 .orElseGet(() -> {
-                    TestRun run = new TestRun(RunStatus.UNDEFINED, definition);
-                    definition.setTestRuns(asList(run));
+                    TestRunExecutionStatus run = new TestRunExecutionStatus(RunStatus.UNDEFINED, definition);
+                    definition.setTestRunExecutionStatuses(asList(run));
                     return run;
                 });
     }
